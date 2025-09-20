@@ -2,8 +2,8 @@
 const mongoose = require('mongoose');
 
 const geoSchema = new mongoose.Schema({
-  lat: { type: String, required: true },
-  lng: { type: String, required: true },
+  lat: { type: String },
+  lng: { type: String },
 }, { _id: false });
 
 const addressSchema = new mongoose.Schema({
@@ -11,7 +11,7 @@ const addressSchema = new mongoose.Schema({
   suite: { type: String },
   city: { type: String, required: true },
   zipcode: { type: String, required: true },
-  geo: { type: geoSchema, required: true },
+  geo: { type: geoSchema },
 }, { _id: false });
 
 const companySchema = new mongoose.Schema({
@@ -21,9 +21,9 @@ const companySchema = new mongoose.Schema({
 }, { _id: false });
 
 const contactSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true/*, unique: true*/ },
   address: { type: addressSchema, required: true },
   phone: { type: String },
   website: { type: String },

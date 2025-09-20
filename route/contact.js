@@ -1,7 +1,7 @@
 // routes/contactRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getAllContacts } = require('../controller/contact');
+const { getAllContacts, getContact, postContact, putContact, deleteContact } = require('../controller/contact');
 
 // Route pour récupérer tous les utilisateurs
 /**
@@ -30,5 +30,13 @@ const { getAllContacts } = require('../controller/contact');
  *         description: Non autorisé (token manquant ou invalide)
  */
 router.get('/', getAllContacts);
+
+router.get('/:id', getContact);
+
+router.post('/', postContact);
+
+router.put('/:id', putContact);
+
+router.delete('/:id', deleteContact);
 
 module.exports = router;
