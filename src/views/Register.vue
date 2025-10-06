@@ -3,16 +3,6 @@
     <h1>Inscription</h1>
     <form @submit.prevent="handleRegister">
       <div class="form-group">
-        <label for="name">Nom</label>
-        <input
-          type="text"
-          id="name"
-          v-model="name"
-          required
-          placeholder="Votre nom"
-        />
-      </div>
-      <div class="form-group">
         <label for="email">Email</label>
         <input
           type="email"
