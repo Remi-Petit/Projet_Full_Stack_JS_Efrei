@@ -1,6 +1,6 @@
 const contactSwagger = require('./contact.swagger');
 const authSwagger = require('./auth.swagger');
-// const userSwagger = require('./user.swagger'); // si tu as d'autres routes
+const userSwagger = require('./user.swagger');
 
 const swaggerDocs = {
   openapi: '3.0.0',
@@ -11,7 +11,7 @@ const swaggerDocs = {
   paths: {
     ...authSwagger,
     ...contactSwagger,
-    // ...userSwagger,
+    ...userSwagger,
   },
   components: {
     securitySchemes: {
