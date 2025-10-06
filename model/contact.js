@@ -25,7 +25,7 @@ const contactSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true/*, unique: true*/ },
   address: { type: addressSchema, required: true },
-  phone: { type: String },
+  phone: { type: String, required: true },
   website: { type: String },
   company: { type: companySchema },
 }, { timestamps: true });

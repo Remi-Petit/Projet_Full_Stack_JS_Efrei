@@ -8,8 +8,8 @@ const app = express();
 async function connect() {
     // Connexion à MongoDB
     await mongoose.connect(MONGODB_URI)
-    .then(() => console.log('✅'))
-    .catch(err => console.error('❌', err));
+    .then(() => console.log('Connect DB : ✅'))
+    .catch(err => console.error('Connect DB : ❌', err));
 }
 
 module.exports = { connect };

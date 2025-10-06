@@ -7,7 +7,9 @@ const contactRoutes = require('./route/contact');
 const userRoutes = require('./route/user');
 const authRoutes = require('./route/auth');
 const { protect } = require('./middleware/authMiddleware');
-const { swaggerUi, specs } = require('./config/swagger');
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swagger');
 
 const app = express();
 
@@ -22,7 +24,7 @@ connect();
 app.use('/api/auth', authRoutes);
 app.use('/api/contacts', protect, contactRoutes);
 app.use('/api/users', protect, userRoutes);
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Démarrage du serveur
 app.listen(PORT, () => {
