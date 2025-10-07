@@ -1,9 +1,20 @@
 import { useState } from 'react';
-import { TextField, Button, Box, Typography, Alert } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 
-export default function AddContactForm({ onContactAdded }: { onContactAdded: () => void }) {
+export default function AddContactButton({ onContactAdded }: { onContactAdded: () => void }) {
   const token = useSelector((state: any) => state.auth.token);
+  const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -17,6 +28,16 @@ export default function AddContactForm({ onContactAdded }: { onContactAdded: () 
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setError('');
+    setSuccess('');
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -66,30 +87,51 @@ export default function AddContactForm({ onContactAdded }: { onContactAdded: () 
         companyName: '',
       });
       onContactAdded();
+      handleClose();
+    //   setTimeout(() => {
+    //     handleClose();
+    //   }, 1500);
     } catch (err: any) {
       setError(err.message);
     }
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mb: 4 }}>
-      <Typography variant="h6" gutterBottom>
+    <>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleClickOpen}
+      >
         Ajouter un contact
-      </Typography>
-      <TextField label="Prénom" name="firstName" value={form.firstName} onChange={handleChange} required fullWidth margin="normal" />
-      <TextField label="Nom" name="lastName" value={form.lastName} onChange={handleChange} required fullWidth margin="normal" />
-      <TextField label="Email" name="email" type="email" value={form.email} onChange={handleChange} required fullWidth margin="normal" />
-      <TextField label="Téléphone" name="phone" value={form.phone} onChange={handleChange} required fullWidth margin="normal" />
-      <TextField label="Site web" name="website" value={form.website} onChange={handleChange} fullWidth margin="normal" />
-      <TextField label="Rue" name="addressStreet" value={form.addressStreet} onChange={handleChange} required fullWidth margin="normal" />
-      <TextField label="Ville" name="addressCity" value={form.addressCity} onChange={handleChange} required fullWidth margin="normal" />
-      <TextField label="Code postal" name="addressZipcode" value={form.addressZipcode} onChange={handleChange} required fullWidth margin="normal" />
-      <TextField label="Entreprise" name="companyName" value={form.companyName} onChange={handleChange} fullWidth margin="normal" />
-      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-        Ajouter
       </Button>
-      {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-      {success && <Alert severity="success" sx={{ mt: 2 }}>{success}</Alert>}
-    </Box>
+
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <DialogTitle>Ajouter un contact</DialogTitle>
+        <DialogContent>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+            <TextField label="Prénom" name="firstName" value={form.firstName} onChange={handleChange} required fullWidth margin="normal" />
+            <TextField label="Nom" name="lastName" value={form.lastName} onChange={handleChange} required fullWidth margin="normal" />
+            <TextField label="Email" name="email" type="email" value={form.email} onChange={handleChange} required fullWidth margin="normal" />
+            <TextField label="Téléphone" name="phone" value={form.phone} onChange={handleChange} required fullWidth margin="normal" />
+            <TextField label="Site web" name="website" value={form.website} onChange={handleChange} fullWidth margin="normal" />
+            <TextField label="Rue" name="addressStreet" value={form.addressStreet} onChange={handleChange} required fullWidth margin="normal" />
+            <TextField label="Ville" name="addressCity" value={form.addressCity} onChange={handleChange} required fullWidth margin="normal" />
+            <TextField label="Code postal" name="addressZipcode" value={form.addressZipcode} onChange={handleChange} required fullWidth margin="normal" />
+            <TextField label="Entreprise" name="companyName" value={form.companyName} onChange={handleChange} fullWidth margin="normal" />
+            {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+            {success && <Alert severity="success" sx={{ mt: 2 }}>{success}</Alert>}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Annuler
+          </Button>
+          <Button onClick={handleSubmit} variant="contained" color="primary">
+            Ajouter
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }

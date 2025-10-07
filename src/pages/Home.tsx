@@ -56,9 +56,6 @@ export default function Home() {
         </Toolbar>
       </AppBar>
       <Box sx={{ p: 3 }}>
-        <ContactList />
-      </Box>
-      <Box sx={{ p: 3 }}>
         <AddContactForm onContactAdded={() => setRefresh(r => !r)} />
         <ContactList key={refresh ? 'refresh1' : 'refresh0'} />
       </Box>
