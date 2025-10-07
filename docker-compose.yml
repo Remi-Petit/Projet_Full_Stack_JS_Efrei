@@ -19,8 +19,6 @@ services:
     restart: unless-stopped
     ports:
       - "${DOCKER_PORT_NGINX}:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - efrei-fullstack-js-network
 
