@@ -1,0 +1,95 @@
+import { useState } from 'react';
+import { TextField, Button, Box, Typography, Alert } from '@mui/material';
+import { useSelector } from 'react-redux';
+
+export default function AddContactForm({ onContactAdded }: { onContactAdded: () => void }) {
+  const token = useSelector((state: any) => state.auth.token);
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    website: '',
+    addressStreet: '',
+    addressCity: '',
+    addressZipcode: '',
+    companyName: '',
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/contacts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          website: form.website,
+          address: {
+            street: form.addressStreet,
+            city: form.addressCity,
+            zipcode: form.addressZipcode,
+          },
+          company: {
+            name: form.companyName,
+          },
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Erreur lors de l'ajout du contact.");
+      }
+      setSuccess('Contact ajouté !');
+      setForm({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        website: '',
+        addressStreet: '',
+        addressCity: '',
+        addressZipcode: '',
+        companyName: '',
+      });
+      onContactAdded();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  return (
+    <Box component="form" onSubmit={handleSubmit} sx={{ mb: 4 }}>
+      <Typography variant="h6" gutterBottom>
+        Ajouter un contact
+      </Typography>
+      <TextField label="Prénom" name="firstName" value={form.firstName} onChange={handleChange} required fullWidth margin="normal" />
+      <TextField label="Nom" name="lastName" value={form.lastName} onChange={handleChange} required fullWidth margin="normal" />
+      <TextField label="Email" name="email" type="email" value={form.email} onChange={handleChange} required fullWidth margin="normal" />
+      <TextField label="Téléphone" name="phone" value={form.phone} onChange={handleChange} required fullWidth margin="normal" />
+      <TextField label="Site web" name="website" value={form.website} onChange={handleChange} fullWidth margin="normal" />
+      <TextField label="Rue" name="addressStreet" value={form.addressStreet} onChange={handleChange} required fullWidth margin="normal" />
+      <TextField label="Ville" name="addressCity" value={form.addressCity} onChange={handleChange} required fullWidth margin="normal" />
+      <TextField label="Code postal" name="addressZipcode" value={form.addressZipcode} onChange={handleChange} required fullWidth margin="normal" />
+      <TextField label="Entreprise" name="companyName" value={form.companyName} onChange={handleChange} fullWidth margin="normal" />
+      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        Ajouter
+      </Button>
+      {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+      {success && <Alert severity="success" sx={{ mt: 2 }}>{success}</Alert>}
+    </Box>
+  );
+}
