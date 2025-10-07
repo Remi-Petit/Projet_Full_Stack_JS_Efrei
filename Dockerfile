@@ -1,13 +1,7 @@
-# Dockerfile
-# Étape 1 : Build de l'application Vite
-FROM node:22-alpine AS builder
+# Étape 1 : Utilisation d'un conteneur léger pour copier les fichiers
+FROM alpine AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-# RUN npm run build
-
-RUN npm run build -- --force  # Ignore les erreurs TypeScript non critiques
+COPY dist ./dist
 
 # Étape 2 : Serveur Nginx pour servir les fichiers statiques
 FROM nginx:alpine
