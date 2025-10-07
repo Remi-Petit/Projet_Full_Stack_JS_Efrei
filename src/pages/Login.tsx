@@ -1,6 +1,7 @@
-import { useState } from 'react';
+// src/pages/Login.tsx
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setToken, setUser } from '../stores/authSlice';
 import LoginForm from '../components/LoginForm';
 import { Container, Typography, Alert, Box } from '@mui/material';
@@ -9,6 +10,14 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const token = useSelector((state: any) => state.auth.token);
+
+  // Redirection automatique si l'utilisateur est déjà connecté
+  useEffect(() => {
+    if (token) {
+      navigate('/');
+    }
+  }, [token, navigate]);
 
   const handleLogin = async (email: string, password: string) => {
     setError('');
@@ -19,11 +28,9 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
       if (!response.ok) throw new Error('Email ou mot de passe incorrect.');
-
       const data = await response.json();
       dispatch(setToken(data.token));
       dispatch(setUser(data.user));
-
       navigate('/');
     } catch (err: any) {
       setError(err.message);
