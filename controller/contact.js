@@ -2,83 +2,86 @@
 const Contact = require('../model/contact');
 
 const getAllContacts = async (req, res) => {
-    try {
-      const contacts = await Contact.find({});
-      if (!contacts.length) {
-        return res.status(404).json({ message: 'Aucun utilisateur trouvé.' });
-      }
-      res.status(200).json(contacts);
-    } catch (error) {
-      res.status(500).json({
-        message: 'Erreur serveur lors de la récupération des utilisateurs.',
-        error: error.message,
-      });
+  try {
+    const contacts = await Contact.find({ user: req.user.id });
+    if (!contacts.length) {
+      return res.status(404).json({ message: 'Aucun contact trouvé.' });
     }
-  };
+    res.status(200).json(contacts);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Erreur serveur lors de la récupération des contacts.',
+      error: error.message,
+    });
+  }
+};
 
 const getContact = async (req, res) => {
-    try {
-      const { id } = req.params;
-  
-      const contact = await Contact.findById(id);
-      if (!contact) {
-        return res.status(404).json({
-          message: 'Aucun contact trouvé avec cet ID.',
-        });
-      }
-  
-      res.status(200).json({
-        contact,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Erreur serveur lors de la récupération du contact.',
-        //error: error.message,
+  try {
+    const { id } = req.params;
+    const contact = await Contact.findOne({ _id: id, user: req.user.id });
+    if (!contact) {
+      return res.status(404).json({
+        message: 'Aucun contact trouvé avec cet ID.',
       });
     }
-  };
+    res.status(200).json({ contact });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Erreur serveur lors de la récupération du contact.',
+    });
+  }
+};
 
 const postContact = async (req, res) => {
-    try {
-      const contact = { name, username, email, address, phone, website, company } = req.body;
-      
-      const conflicts = [
-        { field: 'email', value: email, message: 'Un contact avec cet email existe déjà.' },
-        { field: 'phone', value: phone, message: 'Un contact avec ce numéro de téléphone existe déjà.' }
-      ];
+  try {
+    const { firstName, lastName, email, address, phone, website, company } = req.body;
 
-      for (const { field, value, message } of conflicts) {
-        const existingContact = await Contact.findOne({ [field]: value });
-        if (existingContact) {
-          return res.status(400).json({ message });
-        }
+    const conflicts = [
+      { field: 'email', value: email, message: 'Un contact avec cet email existe déjà.' },
+      { field: 'phone', value: phone, message: 'Un contact avec ce numéro de téléphone existe déjà.' }
+    ];
+
+    for (const { field, value, message } of conflicts) {
+      const existingContact = await Contact.findOne({ [field]: value, user: req.user.id });
+      if (existingContact) {
+        return res.status(400).json({ message });
       }
-
-      const newContact = new Contact(contact);
-      await newContact.save();
-
-      res.status(200).json({
-        message: 'contact ajouté',
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Erreur serveur lors de la récupération des données contact.',
-        //error: error.message,
-      });
     }
-  };
+
+    const newContact = new Contact({
+      firstName,
+      lastName,
+      email,
+      address,
+      phone,
+      website,
+      company,
+      user: req.user.id
+    });
+    await newContact.save();
+
+    res.status(200).json({
+      message: 'Contact ajouté',
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Erreur serveur lors de la récupération des données contact.',
+    });
+  }
+};
 
 const putContact = async (req, res) => {
   try {
     const { id } = req.params;
     const { firstName, lastName, email, address, phone, website, company } = req.body;
 
-    const contact = await Contact.findById(id);    
+    const contact = await Contact.findOne({ _id: id, user: req.user.id });
     if (!contact) {
       return res.status(404).json({
         message: 'Aucun contact trouvé avec cet ID.',
       });
-    }    
+    }
 
     if (firstName) contact.firstName = firstName;
     if (lastName) contact.lastName = lastName;
@@ -87,7 +90,7 @@ const putContact = async (req, res) => {
     if (phone) contact.phone = phone;
     if (website) contact.website = website;
     if (company) contact.company = company;
-    
+
     await contact.save();
 
     res.status(200).json({
@@ -96,7 +99,6 @@ const putContact = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: 'Erreur serveur lors de la modification du contact.',
-      //error: error.message,
     });
   }
 };
@@ -105,7 +107,7 @@ const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const contact = await Contact.findByIdAndDelete(id);
+    const contact = await Contact.findOneAndDelete({ _id: id, user: req.user.id });
     if (!contact) {
       return res.status(404).json({
         message: 'Aucun contact trouvé avec cet ID.',
@@ -121,7 +123,6 @@ const deleteContact = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   getAllContacts,

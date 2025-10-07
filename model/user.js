@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 6,
-  },
+    minlength: 8,
+  }
 }, { timestamps: true });
 
 // // Hash du mot de passe avant sauvegarde
