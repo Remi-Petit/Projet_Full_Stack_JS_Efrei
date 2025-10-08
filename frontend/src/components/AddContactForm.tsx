@@ -10,6 +10,7 @@ import {
   DialogActions
 } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { createContact } from '../api/contactApi';
 
 export default function AddContactButton({ onContactAdded }: { onContactAdded: () => void }) {
   const token = useSelector((state: any) => state.auth.token);
@@ -23,7 +24,7 @@ export default function AddContactButton({ onContactAdded }: { onContactAdded: (
     addressStreet: '',
     addressCity: '',
     addressZipcode: '',
-    companyName: '',
+    company: '',
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -46,52 +47,34 @@ export default function AddContactButton({ onContactAdded }: { onContactAdded: (
     e.preventDefault();
     setError('');
     setSuccess('');
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/contacts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+      const response = await createContact({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        website: form.website,
+        address: {
+          street: form.addressStreet,
+          city: form.addressCity,
+          zipcode: form.addressZipcode,
         },
-        body: JSON.stringify({
-          firstName: form.firstName,
-          lastName: form.lastName,
-          email: form.email,
-          phone: form.phone,
-          website: form.website,
-          address: {
-            street: form.addressStreet,
-            city: form.addressCity,
-            zipcode: form.addressZipcode,
-          },
-          company: {
-            name: form.companyName,
-          },
-        }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Erreur lors de l'ajout du contact.");
-      }
+        company: {
+          name: form.companyName,
+        },
+      }, token);
+
       setSuccess('Contact ajouté !');
-      setForm({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        website: '',
-        addressStreet: '',
-        addressCity: '',
-        addressZipcode: '',
-        companyName: '',
-      });
       onContactAdded();
       handleClose();
-    //   setTimeout(() => {
-    //     handleClose();
-    //   }, 1500);
     } catch (err: any) {
-      setError(err.message);
+      // Affiche les erreurs par champ
+      if (err.errors) {
+        setError(Object.values(err.errors).join(' '));
+      } else {
+        setError(err.message);
+      }
     }
   };
 

@@ -2,14 +2,15 @@
 const express = require('express');
 const router = express.Router();
 const { getAllContacts, getContact, postContact, putContact, deleteContact } = require('../controller/contact');
+const { contactValidationRules } = require('../middleware/contactValidation');
 
 router.get('/', getAllContacts);
 
 router.get('/:id', getContact);
 
-router.post('/', postContact);
+router.post('/', contactValidationRules, postContact);
 
-router.put('/:id', putContact);
+router.put('/:id', contactValidationRules, putContact);
 
 router.delete('/:id', deleteContact);
 

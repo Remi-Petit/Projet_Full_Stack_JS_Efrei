@@ -1,33 +1,20 @@
 // models/contact.js
 const mongoose = require('mongoose');
 
-const geoSchema = new mongoose.Schema({
-  lat: { type: String },
-  lng: { type: String },
-}, { _id: false });
-
-const addressSchema = new mongoose.Schema({
-  street: { type: String, required: true },
-  suite: { type: String },
-  city: { type: String, required: true },
-  zipcode: { type: String, required: true },
-  geo: { type: geoSchema },
-}, { _id: false });
-
-const companySchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  catchPhrase: { type: String },
-  bs: { type: String },
-}, { _id: false });
-
 const contactSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true/*, unique: true*/ },
-  address: { type: addressSchema, required: true },
-  phone: { type: String, required: true, minlength: 10, maxlength: 20 /*, unique: true*/ },
+  firstName: { type: String, required: [true, 'Le prénom est requis.'] },
+  lastName: { type: String, required: [true, 'Le nom est requis.'] },
+  email: { type: String, match: [/.+@.+\..+/, 'Email invalide.'] },
+  phone: { type: String, required: [true, 'Le téléphone est requis.'], minlength: [10, 'Numéro trop court'], maxlength: [20, 'Numéro trop long'] },
   website: { type: String },
-  company: { type: companySchema },
+  address: {
+    street: { type: String },
+    city: { type: String },
+    zipcode: { type: String },
+  },
+  company: {
+    name: { type: String },
+  },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 

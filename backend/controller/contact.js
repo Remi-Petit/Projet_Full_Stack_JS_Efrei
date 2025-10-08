@@ -38,7 +38,7 @@ const postContact = async (req, res) => {
     const { firstName, lastName, email, address, phone, website, company } = req.body;
 
     const conflicts = [
-      { field: 'email', value: email, message: 'Un contact avec cet email existe déjà.' },
+      // { field: 'email', value: email, message: 'Un contact avec cet email existe déjà.' },
       { field: 'phone', value: phone, message: 'Un contact avec ce numéro de téléphone existe déjà.' }
     ];
 
