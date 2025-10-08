@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { TextField, Button, Box, Stack } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Box,
+  Stack,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface LoginFormProps {
   onSubmit: (email: string, password: string) => void;
@@ -8,6 +16,7 @@ interface LoginFormProps {
 export default function LoginForm({ onSubmit }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,24 +40,43 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
         label="Email"
         type="email"
         value={email}
-        onChange={e => setEmail(e.target.value)}
+        onChange={(e) => setEmail(e.target.value)}
         required
         fullWidth
         margin="normal"
         autoComplete="email"
       />
+
       <TextField
         label="Mot de passe"
-        type="password"
+        type={showPassword ? 'text' : 'password'}
         value={password}
-        onChange={e => setPassword(e.target.value)}
+        onChange={(e) => setPassword(e.target.value)}
         required
         fullWidth
         margin="normal"
         autoComplete="current-password"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => setShowPassword((prev) => !prev)}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
 
-      <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ mt: 2 }}
+      >
         Se connecter
       </Button>
 

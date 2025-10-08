@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { TextField, Button, Box } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Box,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface RegisterFormProps {
   onSubmit: (email: string, password: string) => void;
@@ -8,6 +15,7 @@ interface RegisterFormProps {
 export default function RegisterForm({ onSubmit }: RegisterFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,24 +28,44 @@ export default function RegisterForm({ onSubmit }: RegisterFormProps) {
         label="Email"
         type="email"
         value={email}
-        onChange={e => setEmail(e.target.value)}
+        onChange={(e) => setEmail(e.target.value)}
         required
         fullWidth
         margin="normal"
         autoComplete="email"
       />
+
       <TextField
         label="Mot de passe"
-        type="password"
+        type={showPassword ? 'text' : 'password'}
         value={password}
-        onChange={e => setPassword(e.target.value)}
+        onChange={(e) => setPassword(e.target.value)}
         required
         fullWidth
         margin="normal"
         autoComplete="new-password"
         inputProps={{ minLength: 6 }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => setShowPassword((prev) => !prev)}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
-      <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ mt: 2 }}
+      >
         S'inscrire
       </Button>
     </Box>

@@ -1,10 +1,6 @@
 // controller/user.js
 const User = require('../model/user');
 
-const register = async (req, res) => {
-    
-}
-
 const getAllUsers = async (req, res) => {
     try {
       const users = await User.find({});
