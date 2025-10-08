@@ -2,10 +2,10 @@
 const mongoose = require('mongoose');
 
 const contactSchema = new mongoose.Schema({
-  firstName: { type: String, required: [true, 'Le prénom est requis.'] },
-  lastName: { type: String, required: [true, 'Le nom est requis.'] },
-  email: { type: String, match: [/.+@.+\..+/, 'Email invalide.'] },
-  phone: { type: String, required: [true, 'Le téléphone est requis.'], minlength: [10, 'Numéro trop court'], maxlength: [20, 'Numéro trop long'] },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String },
+  phone: { type: String, required: true, minlength: 10, maxlength: 20 },
   website: { type: String },
   address: {
     street: { type: String },

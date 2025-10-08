@@ -1,46 +1,47 @@
-// src/components/ContactEditRow.tsx
-import { TableCell, TableRow, TextField, Button, Box } from '@mui/material';
 import { useState } from 'react';
+import { TableRow, TableCell, TextField, Button, Box } from '@mui/material';
 
-export default function ContactEditRow({
-  contact,
-  onSave,
-  onCancel,
-}: {
-  contact: any;
-  onSave: (data: any) => void;
-  onCancel: () => void;
-}) {
+export default function ContactEditRow({ contact, onSave, onCancel }: any) {
   const [form, setForm] = useState({
-    firstName: contact.firstName,
-    lastName: contact.lastName,
-    email: contact.email,
-    phone: contact.phone,
-    address: { ...contact.address },
-    company: { ...contact.company },
-    website: contact.website,
+    firstName: contact.firstName || '',
+    lastName: contact.lastName || '',
+    email: contact.email || '',
+    phone: contact.phone || '',
+    website: contact.website || '',
+    street: contact.address?.street || '',
+    city: contact.address?.city || '',
+    zipcode: contact.address?.zipcode || '',
+    company: contact.company?.name || '',
   });
 
+  const [errors, setErrors] = useState<any>({});
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name in form.address) {
-      setForm({
-        ...form,
-        address: { ...form.address, [name]: value },
-      });
-    } else if (name in form.company) {
-      setForm({
-        ...form,
-        company: { ...form.company, [name]: value },
-      });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' }); // clear error on change
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave(form);
+  const handleSave = async () => {
+    try {
+      await onSave({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        website: form.website,
+        address: {
+          street: form.street,
+          city: form.city,
+          zipcode: form.zipcode,
+        },
+        company: { name: form.company },
+      });
+      setErrors({});
+    } catch (err: any) {
+      if (err.errors) {
+        setErrors(err.errors); // backend errors par champ
+      }
+    }
   };
 
   return (
@@ -50,8 +51,8 @@ export default function ContactEditRow({
           name="firstName"
           value={form.firstName}
           onChange={handleChange}
-          fullWidth
-          size="small"
+          error={!!errors.firstName}
+          helperText={errors.firstName}
         />
       </TableCell>
       <TableCell>
@@ -59,8 +60,8 @@ export default function ContactEditRow({
           name="lastName"
           value={form.lastName}
           onChange={handleChange}
-          fullWidth
-          size="small"
+          error={!!errors.lastName}
+          helperText={errors.lastName}
         />
       </TableCell>
       <TableCell>
@@ -68,8 +69,8 @@ export default function ContactEditRow({
           name="email"
           value={form.email}
           onChange={handleChange}
-          fullWidth
-          size="small"
+          error={!!errors.email}
+          helperText={errors.email}
         />
       </TableCell>
       <TableCell>
@@ -77,56 +78,61 @@ export default function ContactEditRow({
           name="phone"
           value={form.phone}
           onChange={handleChange}
-          fullWidth
-          size="small"
+          error={!!errors.phone}
+          helperText={errors.phone}
         />
       </TableCell>
       <TableCell>
         <TextField
           name="street"
-          value={form.address?.street || ''}
+          value={form.street}
           onChange={handleChange}
-          fullWidth
-          size="small"
-          placeholder="Rue"
+          error={!!errors['address.street']}
+          helperText={errors['address.street']}
         />
       </TableCell>
       <TableCell>
         <TextField
-          name="name"
-          value={form.company?.name || ''}
+          name="city"
+          value={form.city}
           onChange={handleChange}
-          fullWidth
-          size="small"
-          placeholder="Entreprise"
+          error={!!errors['address.city']}
+          helperText={errors['address.city']}
+        />
+      </TableCell>
+      <TableCell>
+        <TextField
+          name="zipcode"
+          value={form.zipcode}
+          onChange={handleChange}
+          error={!!errors['address.zipcode']}
+          helperText={errors['address.zipcode']}
+        />
+      </TableCell>
+      <TableCell>
+        <TextField
+          name="company"
+          value={form.company}
+          onChange={handleChange}
+          error={!!errors['company.name']}
+          helperText={errors['company.name']}
         />
       </TableCell>
       <TableCell>
         <TextField
           name="website"
-          value={form.website || ''}
+          value={form.website}
           onChange={handleChange}
-          fullWidth
-          size="small"
-          placeholder="Site web"
+          error={!!errors.website}
+          helperText={errors.website}
         />
       </TableCell>
       <TableCell>
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={handleSubmit}
-          >
-            Enregistrer
+          <Button variant="outlined" color="primary" size="small" onClick={handleSave}>
+            Sauvegarder
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            size="small"
-            onClick={onCancel}
-          >
+          <Button variant="outlined" color="secondary" size="small" onClick={onCancel}>
             Annuler
           </Button>
         </Box>

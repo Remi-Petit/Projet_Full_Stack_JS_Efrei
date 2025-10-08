@@ -1,17 +1,7 @@
-// src/api/contactApi.ts
-export const deleteContact = async (id: string, token: string) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/contacts/${id}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!response.ok) throw new Error("Erreur lors de la suppression.");
-  return response.json();
-};
+const API_URL = import.meta.env.VITE_API_URL;
 
-export const updateContact = async (id: string, data: any, token: string) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/contacts/${id}`, {
+export async function updateContact(id: string, data: any, token: string) {
+  const res = await fetch(`${API_URL}/contacts/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -19,20 +9,48 @@ export const updateContact = async (id: string, data: any, token: string) => {
     },
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error("Erreur lors de la mise à jour.");
-  return response.json();
-};
+  const result = await res.json();
+  if (!res.ok) {
+    throw result;
+  }
+  return result;
+}
 
-export const createContact = async (contact: any, token: string) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/contacts`, {
+export async function deleteContact(id: string, token: string) {
+  const res = await fetch(`${API_URL}/contacts/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw result;
+  }
+  return result;
+}
+
+export async function createContact(data: any, token: string) {
+  const res = await fetch(`${API_URL}/contacts`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(contact),
+    body: JSON.stringify(data),
   });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.message || 'Erreur lors de l’ajout du contact.');
-  return data;
-};
+  const result = await res.json();
+  if (!res.ok) {
+    throw result;
+  }
+  return result;
+}
+
+export async function getContacts(token: string) {
+  const res = await fetch(`${API_URL}/contacts`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw result;
+  }
+  return result;
+}
