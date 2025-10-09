@@ -1,3 +1,4 @@
+// swagger/auth.swagger.js
 const authSwagger = {
   '/api/auth/login': {
     post: {
