@@ -105,36 +105,6 @@ const contactSwagger = {
     }
   },
   '/api/contacts/{id}': {
-    get: {
-      tags: ['Contacts'],
-      summary: 'Récupère un contact par son ID',
-      security: [{ bearerAuth: [] }],
-      parameters: [
-        {
-          name: 'id',
-          in: 'path',
-          required: true,
-          schema: { type: 'string' }
-        }
-      ],
-      responses: {
-        200: {
-          description: 'Contact trouvé',
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  contact: { type: 'object' }
-                }
-              }
-            }
-          }
-        },
-        404: { description: 'Aucun contact trouvé avec cet ID' },
-        500: { description: 'Erreur serveur' }
-      }
-    },
     put: {
       tags: ['Contacts'],
       summary: 'Modifie un contact par son ID',
