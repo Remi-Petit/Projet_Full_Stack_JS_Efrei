@@ -46,22 +46,7 @@ cd Projet_Full_Stack_JS_Efrei/backend
 npm install
 ```
 
-### 3️⃣ Créer le fichier `.env`
-
-Crée un fichier `.env` à la racine du dossier `backend` :
-
-```env
-PORT=3300
-MONGO_URI=mongodb+srv://remipetit_db_user:EPlAPGaLCR8Nhf7A@apipremiercoursdevfullj.yj709wt.mongodb.net/Premier_Cours_FullStack_JS
-JWT_SECRET=ton_secret_super_secure_123
-JWT_EXPIRES_IN=1d
-FRONTEND_URL=http://localhost:5200
-```
-
-> ⚠️ **Note :** ces variables sont aussi référencées dans `/config/config.js`.
-> Pense à mettre à jour la variable `FRONTEND_URL` si tu modifies le port du frontend.
-
-### 4️⃣ Lancer le serveur
+### 3️⃣  Lancer le serveur
 
 ```bash
 node app.js
@@ -234,6 +219,14 @@ Si tu veux tester rapidement l’API :
 ✅ Tests automatisés sur toutes les routes principales
 
 ---
+
+## 🤓🧐 Lancement des tests du backend
+* Il faut d'abord mettre "VITE_ENV_MODE" sur "test" dans le .env, trouvable au niveau du parent du dossier backend, à la racine de ce repo.
+
+```bash
+npm test
+```
+
 
 ## 🧐 Informations complémentaires
 
