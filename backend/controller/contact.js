@@ -16,23 +16,6 @@ const getAllContacts = async (req, res) => {
   }
 };
 
-const getContact = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const contact = await Contact.findOne({ _id: id, user: req.user.id });
-    if (!contact) {
-      return res.status(404).json({
-        message: 'Aucun contact trouvé avec cet ID.',
-      });
-    }
-    res.status(200).json({ contact });
-  } catch (error) {
-    res.status(500).json({
-      message: 'Erreur serveur lors de la récupération du contact.',
-    });
-  }
-};
-
 const postContact = async (req, res) => {
   try {
     const { firstName, lastName, email, address, phone, website, company } = req.body;
@@ -126,7 +109,6 @@ const deleteContact = async (req, res) => {
 
 module.exports = {
   getAllContacts,
-  getContact,
   postContact,
   putContact,
   deleteContact,
