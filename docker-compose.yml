@@ -36,5 +36,4 @@ services:
     environment:
       - NODE_ENV=${VITE_ENV_MODE}
     volumes:
-      - ./backend:/app
       - ./.env:/.env
