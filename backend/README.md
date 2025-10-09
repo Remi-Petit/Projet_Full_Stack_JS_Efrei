@@ -15,7 +15,8 @@ Si le serveur renvoie "Connect DB : ✅" c'est que la connexion est faite avec s
 Sinon, il renvoie "Connect DB : ❌".
 
 ### Variable d'environnement
-
+Les variables d'environnemet de l'app sont dans le fichier .env.
+N'oubliez pas de mettre à jour également côté frontend si besoin.
 
 ## Architecture
 Variables d'environnement : /config/config.js
