@@ -45,20 +45,7 @@ cd Projet_Full_Stack_JS_Efrei/frontend
 npm install
 ```
 
-### 3️⃣ Créer le fichier `.env`
-
-Crée un fichier `.env` à la racine du dossier `frontend` :
-
-```env
-VITE_API_URL=http://localhost:3300/api
-VITE_ENV_MODE=development
-VITE_HOST=localhost
-VITE_PORT=5010
-```
-
-> 🔸 Si le backend tourne sur un autre port ou domaine, adapte cette variable.
-
-### 4️⃣ Lancer le serveur de développement
+### 3️⃣ Lancer le serveur de développement
 
 ```bash
 npm run dev
@@ -165,7 +152,7 @@ localStorage.setItem('user', JSON.stringify(data.user));
 * `PUT /api/contacts/:id` → Met à jour un contact
 * `DELETE /api/contacts/:id` → Supprime un contact
 
-> 🔗 L’URL de base de l’API est définie par `VITE_API_URL` dans le fichier `.env`.
+> 🔗 L’URL de base de l’API est définie par le fichier `.env`, situé à la racine de ce repo.
 
 ---
 
