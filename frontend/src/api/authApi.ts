@@ -1,6 +1,8 @@
 // src/api/authApi.ts
+import { ENV } from '../config/env';
+
 export const registerUser = async (email: string, password: string) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+  const response = await fetch(`${ENV.API_URL}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
@@ -15,7 +17,7 @@ export const registerUser = async (email: string, password: string) => {
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+  const response = await fetch(`${ENV.API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),

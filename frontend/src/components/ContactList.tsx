@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { deleteContact, updateContact } from '../api/contactApi';
 import ContactEditRow from './ContactEditRow';
+import { getContacts } from '../api/contactApi';
 
 export default function ContactList() {
   const token = useSelector((state: any) => state.auth.token);
@@ -27,25 +28,35 @@ export default function ContactList() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const fetchContacts = async () => {
+    let active = true;
+
+    const load = async () => {
+      if (!token) {
+        setContacts([]);
+        return;
+      }
+
       setLoading(true);
       setError('');
+
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/contacts`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || 'Erreur lors de la récupération des contacts.');
-        }
-        setContacts(data);
+        const data = await getContacts(token);
+        if (active) setContacts(data);
       } catch (err: any) {
-        setError(err.message);
+        const message =
+          err?.message ??
+          err?.error ??
+          'Erreur lors de la récupération des contacts.';
+        if (active) setError(message);
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     };
-    if (token) fetchContacts();
+
+    load();
+    return () => {
+      active = false; // évite les setState après unmount
+    };
   }, [token]);
 
   const handleDelete = async (id: string) => {

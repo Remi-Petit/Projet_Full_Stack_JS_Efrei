@@ -1,8 +1,8 @@
 // src/api/contactApi.ts
-const API_URL = import.meta.env.VITE_API_URL;
+import { ENV } from '../config/env';
 
 export async function updateContact(id: string, data: any, token: string) {
-  const res = await fetch(`${API_URL}/contacts/${id}`, {
+  const res = await fetch(`${ENV.API_URL}/contacts/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export async function updateContact(id: string, data: any, token: string) {
 }
 
 export async function deleteContact(id: string, token: string) {
-  const res = await fetch(`${API_URL}/contacts/${id}`, {
+  const res = await fetch(`${ENV.API_URL}/contacts/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -30,7 +30,7 @@ export async function deleteContact(id: string, token: string) {
 }
 
 export async function createContact(data: any, token: string) {
-  const res = await fetch(`${API_URL}/contacts`, {
+  const res = await fetch(`${ENV.API_URL}/contacts`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export async function createContact(data: any, token: string) {
 }
 
 export async function getContacts(token: string) {
-  const res = await fetch(`${API_URL}/contacts`, {
+  const res = await fetch(`${ENV.API_URL}/contacts`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   const result = await res.json();

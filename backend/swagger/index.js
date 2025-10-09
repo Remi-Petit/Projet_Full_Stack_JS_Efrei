@@ -1,5 +1,5 @@
 // swagger/index.js
-const { HOST, PORT } = require('../config/config');
+const { HOST, PORT, PROTOCOL } = require('../config/config');
 const contactSwagger = require('./contact.swagger');
 const authSwagger = require('./auth.swagger');
 
@@ -12,7 +12,7 @@ const swaggerDocs = {
   },
   servers: [
     {
-      url: `http://${HOST}:${PORT}`,
+      url: `${PROTOCOL}://${HOST}:${PORT}`,
       description: 'Serveur local'
     }
   ],
@@ -23,7 +23,7 @@ const swaggerDocs = {
   components: {
     securitySchemes: {
       bearerAuth: {
-        type: 'http',
+        type: `${PROTOCOL}`,
         scheme: 'bearer',
         bearerFormat: 'JWT',
         description: 'Entrez votre token JWT dans le format : Bearer <token>'

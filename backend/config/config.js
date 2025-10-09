@@ -2,9 +2,10 @@
 require('dotenv').config({ path: './../.env' });
 
 module.exports = {
-  NODE_ENV: process.env.NODE_ENV || 'development',
-  HOST: process.env.HOST || 'localhost',
-  PORT: process.env.PORT || 3000,
+  NODE_ENV: process.env.VITE_ENV_MODE || 'development',
+  HOST: process.env.VITE_HOST_API || 'localhost',
+  PORT: process.env.VITE_PORT_API || 3000,
+  PROTOCOL: process.env.VITE_PROTOCOL_API || 'http',
   MONGODB_URI: process.env.MONGODB_URI,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
