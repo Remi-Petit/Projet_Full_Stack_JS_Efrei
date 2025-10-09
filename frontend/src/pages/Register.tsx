@@ -1,3 +1,4 @@
+// src/pages/Register.tsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';

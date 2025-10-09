@@ -1,73 +1,220 @@
-# React + TypeScript + Vite
+# ⚛️ Frontend - Projet Full Stack JS (EFREI)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend développé avec **React + TypeScript + Vite**, utilisant **Redux Toolkit** pour la gestion d’état globale et **Material UI (MUI)** pour le design.
+Ce client se connecte au backend Node.js/Express via une API REST sécurisée par JWT.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Introduction
 
-## React Compiler
+Ce frontend constitue la partie **interface utilisateur** du projet Full Stack JS.
+Il permet :
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* L’**inscription** et la **connexion** des utilisateurs via le backend,
+* La **gestion complète des contacts** (CRUD),
+* L’accès sécurisé grâce à un **token JWT** stocké dans `localStorage`.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🧰 Stack technique
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Élément          | Technologie                  |
+| ---------------- | ---------------------------- |
+| Framework        | React 18 + TypeScript + Vite |
+| État global      | Redux Toolkit                |
+| UI               | Material UI (MUI v5)         |
+| Routing          | React Router DOM             |
+| API              | Fetch + VITE_API_URL (env)   |
+| Authentification | JWT (géré côté frontend)     |
+| Build            | Vite                         |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## ⚙️ Installation & lancement
+
+### 1️⃣ Cloner le dépôt
+
+```bash
+git clone https://github.com/Remi-Petit/Projet_Full_Stack_JS_Efrei.git
+cd Projet_Full_Stack_JS_Efrei/frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2️⃣ Installer les dépendances
+
+```bash
+npm install
+```
+
+### 3️⃣ Créer le fichier `.env`
+
+Crée un fichier `.env` à la racine du dossier `frontend` :
+
+```env
+VITE_API_URL=http://localhost:3300/api
+VITE_ENV_MODE=development
+VITE_HOST=localhost
+VITE_PORT=5010
+```
+
+> 🔸 Si le backend tourne sur un autre port ou domaine, adapte cette variable.
+
+### 4️⃣ Lancer le serveur de développement
+
+```bash
+npm run dev
+```
+
+L’application sera accessible sur [http://localhost:5010](http://localhost:5010).
+
+---
+
+## 🧩 Architecture du projet
+
+```
+frontend/
+├── src/
+│   ├── api/               # Fonctions d'appel à l'API (auth & contacts)
+│   │   ├── authApi.ts
+│   │   └── contactApi.ts
+│   ├── components/        # Composants réutilisables (formulaires, navbar, etc.)
+│   ├── pages/             # Pages principales (Home, Login, Register)
+│   ├── routes/            # Définition des routes (AppRoutes + ProtectedRoute)
+│   ├── stores/            # Store Redux et slices (authSlice)
+│   ├── App.tsx            # Racine de l’application React
+│   ├── main.tsx           # Point d’entrée principal
+│   └── index.css          # Styles globaux
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── .env
+```
+
+---
+
+## 💡 Fonctionnalités principales
+
+✅ **Authentification sécurisée**
+
+* Enregistrement et connexion via l’API backend
+* Gestion du token JWT dans `localStorage`
+* Protection des routes privées via `ProtectedRoute`
+
+✅ **Gestion des contacts (CRUD)**
+
+* Création, modification, suppression, et affichage des contacts de l’utilisateur connecté
+* Les appels sont réalisés avec le token JWT dans le header `Authorization`
+
+✅ **Interface utilisateur réactive et claire**
+
+* Design moderne avec Material UI
+* Messages d’erreur clairs (MUI Alert)
+* Navigation fluide grâce à React Router
+
+---
+
+## 🧠 Pages principales
+
+| Page            | Chemin      | Description                                                         |
+| --------------- | ----------- | ------------------------------------------------------------------- |
+| 🏠 **Home**     | `/`         | Page principale protégée, liste les contacts et permet d’en ajouter |
+| 🔐 **Login**    | `/login`    | Connexion utilisateur (redirection vers `/` après succès)           |
+| 🧾 **Register** | `/register` | Création de compte utilisateur                                      |
+
+---
+
+## 🔑 Authentification
+
+* Le **token JWT** est reçu depuis le backend après login/register.
+* Il est stocké dans **Redux** et dans le **localStorage**.
+* Toutes les requêtes API incluent ce token dans les headers :
 
 ```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Authorization: Bearer <token>
 ```
+
+### Exemple de persistance locale :
+
+```js
+localStorage.setItem('token', data.token);
+localStorage.setItem('user', JSON.stringify(data.user));
+```
+
+---
+
+## 🧪 Scripts utiles
+
+| Commande          | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `npm run dev`     | Lance le serveur de développement                  |
+| `npm run build`   | Construit la version de production                 |
+| `npm run preview` | Lance un serveur local pour prévisualiser le build |
+
+---
+
+## 🧰 API utilisée
+
+### Auth
+
+* `POST /api/auth/register` → Inscription
+* `POST /api/auth/login` → Connexion
+
+### Contacts
+
+* `GET /api/contacts` → Récupère les contacts
+* `POST /api/contacts` → Crée un contact
+* `PUT /api/contacts/:id` → Met à jour un contact
+* `DELETE /api/contacts/:id` → Supprime un contact
+
+> 🔗 L’URL de base de l’API est définie par `VITE_API_URL` dans le fichier `.env`.
+
+---
+
+## 🧪 Identifiants de test (exemple)
+
+Tu peux utiliser ce compte de test :
+
+```json
+{
+  "email": "jolyne.kujo@gmail.com",
+  "password": "MotDePasseBienSecret123!"
+}
+```
+
+Ou bien en créer un nouveau via la page **Inscription**.
+
+---
+
+## 🧱 Sécurité intégrée
+
+* 🔐 JWT pour protéger les routes
+* ⚙️ Stockage du token sécurisé dans localStorage (non accessible aux cookies HTTPOnly)
+* 🧰 Validation des entrées (frontend et backend)
+* 🚧 Redirection automatique vers /login si non authentifié
+
+---
+
+## 🧭 Exemple de flux utilisateur
+
+```mermaid
+graph TD;
+A[Utilisateur] --> B[Formulaire Login/Register];
+B -->|email/password| C[API Backend /auth];
+C -->|token JWT| D[Redux Store];
+D --> E[Stockage localStorage];
+E --> F[Appel API /contacts];
+F --> G[Affichage Home / Liste de contacts];
+```
+
+---
+
+## 👨‍💻 Auteur
+
+👤 **Rémi Petit**
+EFREI - Projet Full Stack JS
+📧 [remi.petit93370@gmail.com](mailto:remi.petit93370@gmail.com)
+
+---
+
+> *« Un frontend clair, rapide et connecté au monde. »*
+
+> *« Sacré ChatGPT hein ? »*
