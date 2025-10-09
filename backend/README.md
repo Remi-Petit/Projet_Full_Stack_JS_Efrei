@@ -10,6 +10,10 @@ npm i
 ### Lancer le serveur
 node .\app.js
 
+### Connexion à la base de donnée
+Si le serveur renvoie "Connect DB : ✅" c'est que la connexion est faite avec succès.
+Sinon, il renvoie "Connect DB : ❌".
+
 ## Architecture
 Variables d'environnement : /config/config.js
 Connexion DB : /db/connect.js
