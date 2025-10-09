@@ -14,6 +14,9 @@ node .\app.js
 Si le serveur renvoie "Connect DB : ✅" c'est que la connexion est faite avec succès.
 Sinon, il renvoie "Connect DB : ❌".
 
+### Variable d'environnement
+
+
 ## Architecture
 Variables d'environnement : /config/config.js
 Connexion DB : /db/connect.js

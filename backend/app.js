@@ -4,7 +4,6 @@ const cors = require('cors');
 const { connect } = require('./db/connect');
 const { HOST, PORT, FRONTEND_URL } = require('./config/config');
 const contactRoutes = require('./route/contact');
-const userRoutes = require('./route/user');
 const authRoutes = require('./route/auth');
 const { protect } = require('./middleware/authMiddleware');
 
@@ -29,7 +28,6 @@ connect();
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/contacts', protect, contactRoutes);
-app.use('/api/users', protect, userRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Démarrage du serveur
