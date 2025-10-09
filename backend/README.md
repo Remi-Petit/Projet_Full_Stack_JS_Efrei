@@ -78,6 +78,9 @@ PUT - Modification d'un contact : Un JSON est envoyé dans la requête - Utilisa
 ### /api/contacts/:id
 DELETE - Supprimer un contact : Utilisation de l'id d'un contact.
 
+### /docs
+Documentation Swagger
+
 ## Info anexe :
 j'ai utilisé ce site à la base pour générer des contacts :
 https://jsonplaceholder.typicode.com/users
