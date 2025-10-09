@@ -144,7 +144,7 @@ export default function ContactList() {
                   <TableCell>{contact.address?.city || ''}</TableCell>
                   <TableCell>{contact.address?.zipcode || ''}</TableCell>
                   <TableCell>{contact.company?.name || ''}</TableCell>
-                  <TableCell>{contact.website || ''}</TableCell>
+                  <TableCell><a href={contact.website || ''} target='_blank'>{contact.website || ''}</a></TableCell>
                   <TableCell>
                     <Box sx={{ display: 'flex', gap: 1 }}>
                       <Button

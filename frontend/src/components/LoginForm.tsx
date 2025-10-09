@@ -26,11 +26,11 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
   // Préremplissage rapide pour la démo
   const handleQuickFill = (account: number) => {
     if (account === 1) {
-      setEmail('nouvel.utilisateur@example.com');
-      setPassword('MotDePasse123!');
+      setEmail('jolyne.kujo@gmail.com');
+      setPassword('MotDePasseBienSecret123!');
     } else if (account === 2) {
-      setEmail('compte2@example.com');
-      setPassword('MotDePasse123!');
+      setEmail('tristepin.de.percedal@ankama.com');
+      setPassword('MotDePasseBienSecret123!');
     }
   };
 
