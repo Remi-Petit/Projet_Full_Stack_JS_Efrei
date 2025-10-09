@@ -4,7 +4,11 @@ Ce projet est un **Full Stack JavaScript** complet, combinant un **frontend Reac
 
 Il s'agit d'une application de **gestion de contacts sécurisée**, avec **authentification JWT**, **interface moderne (MUI)**, et **API REST documentée avec Swagger**.
 
-* IL est déployée sur mon serveur à cette adresse : https://efrei-fullstack-js.remipetit.fr
+* Lien de l'application : https://efrei-fullstack-js.remipetit.fr
+
+* Lien de l'api : https://efrei-fullstack-js.remipetit.fr/api
+
+* Lien de Swagger : https://efrei-fullstack-js.remipetit.fr/docs
 
 ---
 
